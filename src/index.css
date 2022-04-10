@@ -1,0 +1,122 @@
+body {
+  margin: 100px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.inputPlayer, .suggestionBox {
+
+    font-weight: 700 !important;
+    padding: 20px !important;
+    border: 1px solid #005864 !important;
+    color: #005864 !important;
+    position: relative !important;
+    z-index: 3 !important;
+    display: flex !important;
+    width: 50% !important;
+    margin:0 auto;
+
+
+}
+
+
+.test{
+
+  justify-content: center !important;
+}
+
+
+.suggestionBox{
+  cursor:pointer;
+  border: 1px solid black;
+}
+
+.suggestionBox:hover{
+  background-color: grey;
+}
+
+td{
+  background:#edeae5;
+}
+
+body {
+
+  background-color: #f5f2ec;
+}
+
+.testes{
+  position: relative; 
+  z-index: 1; 
+}
+
+.logo{
+
+  width:2em;
+}
+
+.teamName{
+  text-transform: capitalize;
+}
+
+.teamColumn{
+  vertical-align: middle;
+}
+
+i[class*=arrow] {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  border: 0.125rem solid;
+  margin: 1em;
+  border-bottom: 0;
+  border-left: 0;
+  border-radius: 1px;
+  text-indent: -624.9375rem;
+}
+i[class*=arrow][class*=-blue] {
+  border-color: #2D86F7;
+}
+
+i[class*=arrow][class*=-up] {
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+i[class*=arrow][class*=-down] {
+  -webkit-transform: rotate(135deg);
+  -moz-transform: rotate(135deg);
+  -ms-transform: rotate(135deg);
+  -o-transform: rotate(135deg);
+  transform: rotate(135deg);
+}
+.bigger{
+  display: flex;
+    justify-content: center;
+    vertical-align: middle;
+    align-items: center;
+
+}
+
+.answerDialog{
+  margin: 0 auto;
+    justify-content: center;
+    vertical-align: middle;
+    align-items: center;
+
+}
+
+.answerDialog .logo{
+  display: block;
+  margin: 0 auto;
+
+}

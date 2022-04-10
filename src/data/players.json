@@ -1,0 +1,58 @@
+{
+    "players":[
+        {
+            "Name": "João Mário",
+            "Team": "FCP",
+            "Number": 23,
+            "Position": "RB",
+            "Age": 22,
+            "Logo": "FCPorto.png",
+            "Zona": "Norte"
+        },
+        {
+            "Name": "Lucas Verissimo",
+            "Team": "SLB",
+            "Number": 4,
+            "Position": "CB",
+            "Age": 26,
+            "Logo": "SLBenfica.png",
+            "Zona": "Sul"
+        },
+        {
+            "Name": "André Horta",
+            "Team": "SCB",
+            "Number": 10,
+            "Position": "MD",
+            "Age": 25,
+            "Logo": "SCBraga.png",
+            "Zona": "Norte"
+        },
+        {
+            "Name": "João Palhinha",
+            "Team": "SCP",
+            "Number": 6,
+            "Position": "MC",
+            "Age": 26,
+            "Logo": "SCPortugal.png",
+            "Zona": "Sul"
+        },
+        {
+            "Name": "Pepe",
+            "Team": "FCP",
+            "Number": 3,
+            "Position": "CB",
+            "Age": 39,
+            "Logo": "FCPorto.png",
+            "Zona": "Norte"
+        },
+        {
+            "Name": "Darwin Nuñez",
+            "Team": "SLB",
+            "Number": 9,
+            "Position": "CF",
+            "Age": 22,
+            "Logo": "SLBenfica.png",
+            "Zona": "Sul"
+        }
+    ]
+}
