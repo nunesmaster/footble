@@ -133,7 +133,15 @@ i[class*=arrow][class*=-down] {
   z-index: 99999;
   left: 0;
   right: 0;
-  top: -5em;
+  top:2em;
+}
+
+.boxB {
+  position: absolute;
+  z-index: 99999;
+  left: 0;
+  right: 0;
+  top: 4em;
 }
 
 .suggestionBox{
