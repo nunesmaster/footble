@@ -118,25 +118,31 @@ export default function Main(){
     }
     return (
         <div className="mb-3 container testes">
-            <input 
-                className="inputPlayer col-md-12 input" 
-                placeholder={"Guess " + count + " of 8" } 
-                onChange={e => onChangeHandler(e.target.value)}
-                value={text}
-                autoComplete="off"
-                onBlur={() => 
-                    setTimeout(() => {
-                        setSuggestions([])
-                    }, 100)}
-                id="inputBox"
-                />
-                {suggestions && suggestions.map((suggestions, i ) =>
-                <div key={i}
-                    onClick={() => onGuessHandler(suggestions.name.common)}
-                    className="col-md-12 justify-content-md-center suggestionBox">{suggestions.name.common}</div>
-            )}
+        
+            <div className="boxA">
+                <input 
+                    className="inputPlayer col-md-12 input" 
+                    placeholder={"Guess " + count + " of 8" } 
+                    onChange={e => onChangeHandler(e.target.value)}
+                    value={text}
+                    autoComplete="off"
+                    onBlur={() => 
+                        setTimeout(() => {
+                            setSuggestions([])
+                        }, 100)}
+                    id="inputBox"
+                    />
+                <div className="containerBox">
+                    {suggestions && suggestions.slice(0,6).map((suggestions, i ) =>
+                    <div key={i}
+                        onClick={() => onGuessHandler(suggestions.name.common)}
+                        className="col-md-12 justify-content-md-center suggestionBox">{suggestions.name.common}
+                    </div>
+                    )}
+                </div>
+            </div>
 
-            <div className="mt-5">
+            <div className="mt-5 boxB">
                 <Table striped bordered hover responsive >
                     <thead>
                         <tr>
