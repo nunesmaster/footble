@@ -11,7 +11,7 @@ import axios from 'axios'
 
 export default function Main(){
 
-    const [country, setCountry] = useState([])
+    const [pokemon, setPokemon] = useState([])
     const [guess, setGuess] = useState({})
     const [guesses, setGuesses] = useState([])
     const [text, setText] = useState('')
@@ -19,24 +19,49 @@ export default function Main(){
     const [answer, setAnswer] = useState({})
     const [count, setCount] = useState(1)
 
-
-
     useEffect(() => {
-        axios.get('https://restcountries.com/v3.1/all')
+        axios.get('https://pokeapi.co/api/v2/pokemon?limit=10000')
             .then(res => {
 
-                let x  = res.data.filter(function (el) {
-                    return el.independent
-                  });
-                setCountry(x)
-                let i = Math.floor(Math.random() * (x.length - 1)) + 0;
+                //setPokemon(res.data)
+                let i = Math.floor(Math.random() * (res.data.count - 0)) + 0;
+                let poke = res.data.results[i].name
+                let pokeId = 0
+                console.log(res.data)
+                axios.get('https://pokeapi.co/api/v2/pokemon/'+ poke)
+                    .then(res2 => {
         
-                setAnswer(x[i])
-                console.log(x)
+                        //setPokemon(res.data)
+                
+                        
+                        console.log(res2.data)
+                        setAnswer(res2.data)
+                        pokeId = res2.data.results[i].id
+                        axios.get('https://pokeapi.co/api/v2/evolution-chain/'+ pokeId.toString())
+                        .then(res3 => {
+            
+                            //setPokemon(res.data)
+                    
+                            
+                            console.log(res3.data)
+                            setAnswer(res3.data)
+                        })
+                    })
+                
+                
             })
 
     }, [])
 
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+      };
+    
+      const handleClose = () => {
+        setOpen(false);
+      };
 
 
     const onSuggestHandler = (text) => {
@@ -46,8 +71,8 @@ export default function Main(){
 
     const onGameOver = () => {
 
-        document.getElementById('inputBox').placeholder = "Game Over"
         document.getElementById('inputBox').disabled = true
+        document.getElementById('inputBox').placeholder = "Game Over"
     }
 
     const onGameWon= () => {
@@ -59,24 +84,19 @@ export default function Main(){
     const onGuessHandler = (text) => {
         let matches = []
         if(text.length > 0){
-            matches = country.filter(country => {
-                return country.name.common === text
+            matches = pokemon.filter(pokemon => {
+                return pokemon.name.common === text
             })
         }
         console.log(answer.name.common)
         console.log(matches[0].name)
         if(answer.name.common === matches[0].name.common){
-            setGuess(matches[0])
-            setGuesses([...guesses , matches[0]])
+            handleClickOpen()
             onGameWon()
-            return;
         }
         if(count === 8){
-            setGuess(matches[0])
-            let arr = [matches[0], answer]
-            setGuesses((guesses) => guesses.concat([ ...arr]))
             onGameOver()
-            return;
+            handleClickOpen()
         }
         setGuess(matches[0])
         setCount(count => count + 1)
@@ -85,9 +105,9 @@ export default function Main(){
     }
 
     const onGetAnswer = () => {
-        let i = Math.floor(Math.random() * (country.length - 1)) + 0;
+        let i = Math.floor(Math.random() * (pokemon.length - 1)) + 0;
         
-        setAnswer(country[i])
+        setAnswer(pokemon[i])
         console.log(answer)
        
     }
@@ -96,9 +116,9 @@ export default function Main(){
     const onChangeHandler = (text) => {
         let matches = []
         if(text.length > 0){
-            matches = country.filter(country=>{
+            matches = pokemon.filter(pokemon=>{
                 const regex = new RegExp(`${text}`, "gi")
-                return country.name.common.match(regex) && !guesses.includes(country)
+                return pokemon.name.common.match(regex) && !guesses.includes(pokemon)
             })
         }
         setSuggestions(matches)
@@ -152,9 +172,9 @@ export default function Main(){
                     <thead>
                         <tr>
                             <th></th>
-                            <th>Continent</th>
-                            <th>Subregion</th>
-                            <th>Language</th>
+                            <th>Type</th>
+                            <th>Weight</th>
+                            <th>Height</th>
                             <th>Currency</th>
                             <th>Population</th>
                         </tr>
@@ -246,7 +266,25 @@ export default function Main(){
                          )}
                     </tbody>
                 </Table>
-                
+                <Dialog
+                    selectedValue="teste"
+                    open={open}
+                    onClose={handleClose}
+                >
+                    <DialogTitle id="alert-dialog-title">
+                     The correct answer was 
+                    </DialogTitle>
+                    <DialogContent>
+                        <div className="answerDialog">
+                        </div>
+                    </DialogContent>
+                    <DialogActions>
+                    <Button onClick={handleClose}>Disagree</Button>
+                    <Button onClick={handleClose} autoFocus>
+                        Agree
+                    </Button>
+                    </DialogActions>
+                </Dialog>
             </div>
         </div>
     )
