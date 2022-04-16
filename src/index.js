@@ -16,3 +16,14 @@ ReactDOM.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+// Fix table head
+function tableFixHead (e) {
+  const el = e.target,
+        sT = el.scrollTop;
+  el.querySelectorAll("thead th").forEach(th => 
+    th.style.transform = `translateY(${sT}px)`
+  );
+}
+document.querySelectorAll(".tableFixHead").forEach(el => 
+  el.addEventListener("scroll", tableFixHead)
+);

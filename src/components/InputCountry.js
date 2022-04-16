@@ -1,7 +1,7 @@
 import React from "react"
 import {Table} from "react-bootstrap"
 import Button from '@mui/material/Button';
-import {useEffect, useState} from 'react'
+import {useEffect, useState, useRef} from 'react'
 import axios from 'axios'
 
 export default function Main(){
@@ -52,14 +52,16 @@ export default function Main(){
     }
 
     const onGuessHandler = (text) => {
+        document.getElementById('inputBox').focus()
+        document.getElementById('inputDiv').style.display = "none"
         let matches = []
         if(text.length > 0){
             matches = country.filter(country => {
                 return country.name.common === text
             })
         }
-        console.log(answer.name.common)
-        console.log(matches[0].name)
+        //console.log(answer.name.common)
+        //console.log(matches[0].name)
         if(answer.name.common === matches[0].name.common){
             setGuess(matches[0])
             setGuesses([...guesses , matches[0]])
@@ -89,6 +91,7 @@ export default function Main(){
 
 
     const onChangeHandler = (text) => {
+        document.getElementById('inputDiv').style.display = "block"
         let matches = []
         if(text.length > 0){
             matches = country.filter(country=>{
@@ -98,7 +101,7 @@ export default function Main(){
         }
         setSuggestions(matches)
         setText(text)
-        console.log(answer)
+        //console.log(answer)
     }
 
     const onRestart = () => {
@@ -112,6 +115,106 @@ export default function Main(){
         setGuesses([])
         onGetAnswer()
     }
+
+
+    function Item({ children }) {
+        const ref = useRef();
+        //console.log(children)
+      
+        useEffect(() => {
+          if (ref.current) {
+            ref.current.scrollIntoView({ behavior: "smooth", block: "end" });
+          }
+          //console.log(ref)
+        }, []);
+      
+        return (
+
+            <tr ref={ref}>
+                <td className="teamColumn" style={{ background: answer.name.common === children.name.common ? "#37be75" : "white" }}><img src={children.flags.png} className="logo"></img><p className="teamName">{children.name.common}</p></td>
+                <td className="teamColumn" style={{ background: answer.continents[0] === children.continents[0] ? "#37be75" : "white" }}>{children.continents[0]}</td>
+                <td className="teamColumn" style={{ background: answer.subregion === children.subregion ? "#37be75" : "white" }}>{children.subregion}</td>
+                <td className="teamColumn" style={
+                            (()=> {
+                                let a = Object.values(children.languages)
+                                let b = Object.values(answer.languages)
+                                let count = 0
+                                for(let i = 0; i < a.length; i++){
+                                    for(let j = 0; j < b.length; j++){
+                                        if(a[i] === b[j])
+                                            count += 1
+                                    }
+                                }
+                                if(count === a.length) return {background: "#37be75"}
+                                else if(count > 0) return {background: "#f4e878"}
+                                
+                                return {background: "white"}
+                                
+                            })()
+                        }>
+                    
+                    {
+                            (()=> {
+                                let a = Object.values(children.languages)
+                                //console.log("len a " + a.length)
+                                //console.log("lista de linguas deste guess " + a)
+                                let s  = ''
+                                if(a.length > 1){
+                                    for(let i = 0; i < a.length;i++){
+                                        if(i === a.length-1)
+                                            s += a[i]
+                                        else {
+                                            s += a[i]+"/ "
+                                            //console.log("lingua " + i + ": " + a[i])
+                                        }
+                                    }
+                                    
+                                    return s
+                                }
+                                
+                                return a[0]
+                                
+                            })()
+                        }
+                </td>
+                <td className="teamColumn" style={
+                            (()=> {
+                                let a = Object.values(children.currencies)
+                                let b = Object.values(answer.currencies)
+                                if(a[0].symbol === b[0].symbol) return {background: "#37be75"}
+                                else return {background: "white"}
+                                
+                            })()
+                        }>
+                    
+                    {
+                            (()=> {
+                                let a = Object.values(children.currencies)
+                                return a[0].symbol
+                                
+                            })()
+                        }
+                </td>
+                <td className="teamColumn" style={{ background: answer.population === children.population ? "#37be75" : "white" }}>
+                    <div className="bigger">
+                        <p style={{display:"inline"}}>{children.population} </p>
+                        {
+                            (()=> {
+                                
+                                if( answer.population > children.population) return <i className="arrow-blue-up"></i>;
+                                else if( answer.population < children.population) return <i className="arrow-blue-down"></i>;
+                                else return "";
+                                
+                            })()
+                        }
+                    </div>
+                </td>
+                
+            </tr>
+          
+        );
+      }
+
     return (
         <div className="mb-3 container testes">
             
@@ -128,7 +231,7 @@ export default function Main(){
                         }, 100)}
                     id="inputBox"
                     />
-                <div className="containerBox">
+                <div className="containerBox" id="inputDiv">
                     {suggestions && suggestions.slice(0,6).map((suggestions, i ) =>
                     <div key={i}
                         onClick={() => onGuessHandler(suggestions.name.common)}
@@ -143,7 +246,8 @@ export default function Main(){
                 <Button variant="outlined" onClick={onRestart} className="mb-2">
                     Restart
                 </Button>
-                <Table striped bordered hover responsive>
+                
+                <Table striped bordered hover responsive className="tableCountrle">
                     <thead>
                         <tr>
                             <th></th>
@@ -156,88 +260,8 @@ export default function Main(){
                     </thead>
                     <tbody>
                         {guesses && guesses.map((guesses, i ) =>
-                        <tr key={i}
-                            className="col-md-12 justify-content-md-center">
-                            <td className="teamColumn" style={{ background: answer.name.common === guesses.name.common ? "#37be75" : "#edeae5" }}><img src={guesses.flags.png} className="logo"></img><p className="teamName">{guesses.name.common}</p></td>
-                            <td className="teamColumn" style={{ background: answer.continents[0] === guesses.continents[0] ? "#37be75" : "#edeae5" }}>{guesses.continents[0]}</td>
-                            <td className="teamColumn" style={{ background: answer.subregion === guesses.subregion ? "#37be75" : "#edeae5" }}>{guesses.subregion}</td>
-                            <td className="teamColumn" style={
-                                        (()=> {
-                                            let a = Object.values(guesses.languages)
-                                            let b = Object.values(answer.languages)
-                                            let count = 0
-                                            for(let i = 0; i < a.length; i++){
-                                                for(let j = 0; j < b.length; j++){
-                                                    if(a[i] === b[j])
-                                                        count += 1
-                                                }
-                                            }
-                                            if(count === a.length) return {background: "#37be75"}
-                                            else if(count > 0) return {background: "#f4e878"}
-                                            
-                                            return {background: "#edeae5"}
-                                            
-                                        })()
-                                    }>
-                                
-                                {
-                                        (()=> {
-                                            let a = Object.values(guesses.languages)
-                                            //console.log("len a " + a.length)
-                                            //console.log("lista de linguas deste guess " + a)
-                                            let s  = ''
-                                            if(a.length > 1){
-                                                for(let i = 0; i < a.length;i++){
-                                                    if(i === a.length-1)
-                                                        s += a[i]
-                                                    else {
-                                                        s += a[i]+"/ "
-                                                        //console.log("lingua " + i + ": " + a[i])
-                                                    }
-                                                }
-                                                
-                                                return s
-                                            }
-                                            
-                                            return a[0]
-                                            
-                                        })()
-                                    }
-                            </td>
-                            <td className="teamColumn" style={
-                                        (()=> {
-                                            let a = Object.values(guesses.currencies)
-                                            let b = Object.values(answer.currencies)
-                                            if(a[0].symbol === b[0].symbol) return {background: "#37be75"}
-                                            else return {background: "#edeae5"}
-                                            
-                                        })()
-                                    }>
-                                
-                                {
-                                        (()=> {
-                                            let a = Object.values(guesses.currencies)
-                                            return a[0].symbol
-                                            
-                                        })()
-                                    }
-                            </td>
-                            <td className="teamColumn" style={{ background: answer.population === guesses.population ? "#37be75" : "#edeae5" }}>
-                                <div className="bigger">
-                                    <p style={{display:"inline"}}>{guesses.population} </p>
-                                    {
-                                        (()=> {
-                                            
-                                            if( answer.population > guesses.population) return <i className="arrow-blue-up"></i>;
-                                            else if( answer.population < guesses.population) return <i className="arrow-blue-down"></i>;
-                                            else return "";
-                                            
-                                        })()
-                                    }
-                                </div>
-                            </td>
-                            
-                        </tr>
+                            <Item key={i}  id={"country"+i}
+                            className="col-md-12 justify-content-md-center">{guesses}</Item>
                          )}
                     </tbody>
                 </Table>
