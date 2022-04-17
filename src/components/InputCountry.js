@@ -13,6 +13,7 @@ export default function Main(){
     const [suggestions, setSuggestions] = useState([])
     const [answer, setAnswer] = useState({})
     const [count, setCount] = useState(1)
+    const [iterator, setIterator] = useState(0)
 
 
 
@@ -115,6 +116,9 @@ export default function Main(){
         setGuesses([])
         onGetAnswer()
     }
+
+
+
 
 
     function Item({ children }) {
@@ -234,6 +238,7 @@ export default function Main(){
                 <div className="containerBox" id="inputDiv">
                     {suggestions && suggestions.slice(0,6).map((suggestions, i ) =>
                     <div key={i}
+                        id={"div"+i}
                         onClick={() => onGuessHandler(suggestions.name.common)}
                         className="col-md-12 justify-content-md-center suggestionBox">{suggestions.name.common}
                     </div>

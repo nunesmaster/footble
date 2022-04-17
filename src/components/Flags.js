@@ -19,6 +19,7 @@ export default function Flags(){
     const [isPaused, setIsPaused] = useState(true);
     const [time, setTime] = useState(0);
     const [iterator, setIterator] = useState(0);
+    const [lastMove, setLastMove] = useState('')
 
     useEffect(() => {
         let interval = null;
@@ -46,7 +47,7 @@ export default function Flags(){
                 setCountry(x)
                 
                 let i = Math.floor(Math.random() * (x.length - 1)) + 0;
-                console.log(i)
+                //console.log(i)
                 setIndex(i)
                 setAnswer(x[i])
                 setFlag(x[i].flags.png)
@@ -168,72 +169,8 @@ export default function Flags(){
       const handleReset = () => {
         setIsActive(false);
         setTime(0);
-      };
-
-
-      const handleKeyPress = (event) => {
-       
-        let len = suggestions.length
-        if(len>6) len = 6
-        console.log(iterator)
-        if(event.key === 'ArrowDown'){
-            console.log("iterador: " + iterator + " suggestions: " + len)
-            
-            if(iterator == 0)
-            
-                document.getElementById('div' + (len-1)).style.backgroundColor = 'white'
-            
-            if(iterator > 0){
-                document.getElementById('div' + (iterator-1)).style.backgroundColor = 'white'
-            }
-            if(iterator === len-1){
-                setIterator(0)
-                document.getElementById('div' + iterator).style.backgroundColor = 'grey'
-                
-                return;
-            }
-            setIterator(iterator+1)
-            
-            document.getElementById('div' + iterator).style.backgroundColor = 'grey'
-
-        }
-        if(event.key === 'ArrowUp'){
-
-            
-            console.log("iterador: " + iterator + " suggestions: " + len)
-            
-            if(iterator == len-1)
-            
-                document.getElementById('div' + 0).style.backgroundColor = 'white'
-            
-            if(iterator < len-1){
-                document.getElementById('div' + (iterator+1)).style.backgroundColor = 'white'
-            }
-            if(iterator == 0){
-                setIterator(len-1)
-                document.getElementById('div' + iterator).style.backgroundColor = 'grey'
-                
-                return;
-            }
-            setIterator(iterator-1)
-            
-            document.getElementById('div' + iterator).style.backgroundColor = 'grey'
-
-        }
-
-        if(event.key === 'Enter'){
-            let i = iterator -1
-            if(i < 0)
-                if(suggestions.length > 6)
-                    i = 5
-                else
-                    i = suggestions.length - 1
-            console.log(suggestions[i].name.common)
-            onGuessHandler(suggestions[i].name.common)
-            
-        }
-
       }
+
 
 
     return (
@@ -249,7 +186,7 @@ export default function Flags(){
                     </Button>
                 </div>
                 <h1>Streak {count}</h1>
-                <div class="imgBox">
+                <div className="imgBox">
                     <Image src={flag} className="guessLogo fluid mb-4"></Image>
                 </div>
                 <input 
@@ -262,7 +199,6 @@ export default function Flags(){
                         setTimeout(() => {
                             setSuggestions([])
                         }, 100)}
-                    onKeyDown={handleKeyPress}
                     id="inputBox"
                     />
                 <div className="containerBox" id="inputDiv">
